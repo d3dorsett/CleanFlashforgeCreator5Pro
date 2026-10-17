@@ -35,6 +35,7 @@ echo "Removing Files /usr/data recursively..." >> "$LOGFILE6"
 rm -rf ./usr/data/anvil/*
 rm -rf ./usr/data/anvil-data/*
 rm -rf ./usr/data/home/pwned/.cache/* 
+rm -rf ./usr/data/home/pwned/*
 rm -rf ./usr/data/anvil-data/* 
 rm -rf ./usr/data/zmod/*
 rm -rf ./usr/data/.mod/.zmod/*
@@ -53,6 +54,7 @@ rm -rf /usr/data/anvil
 rm -rf /usr/data/anvil-data
 rm -rf /usr/data/anvil-timelapse 
 rm -rf /usr/data/home/pwned/.cache 
+rm -rf /usr/data/home/pwned
 rm -rf /usr/data/anvil-data 
 rm -rf /usr/data/zmod/
 rm -rf /usr/data/.mod/.zmod
