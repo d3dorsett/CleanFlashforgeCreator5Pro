@@ -63,12 +63,12 @@ FOLDERS_TO_REMOVE="
 /usr/prog/ffmpeg-4.0.2/share/man
 /usr/prog/libzip-1.10.1/share/man
 "
-echo "Emptying folders (files only, folders are kept)..." >> "$FILES_DELETED"
+echo "Removing folders..." >> "$FILES_DELETED"
 find $FOLDERS_TO_REMOVE -print >> "$FILES_DELETED" 2>&1
 rm -rf $FOLDERS_TO_REMOVE
 
 # Folders that are kept, but the files inside are removed
-echo "Emptying cache, logs, and update folders..." >> "$FILES_DELETED"
+echo "Removing cache, logs, and update files..." >> "$FILES_DELETED"
 FOLDERS_TO_EMPTY="
 /usr/data/bin/opt/var/cache
 /usr/data/logs
