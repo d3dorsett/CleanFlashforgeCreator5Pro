@@ -1,81 +1,83 @@
 #!/bin/sh
 
 USB_DIR="$(dirname "$0")"
-LOGFILE1="$USB_DIR/log-files-pre-usr_data.txt"
-LOGFILE2="$USB_DIR/log-folders-pre-usr_data.txt"
-LOGFILE3="$USB_DIR/log-disk-pre.txt"
-LOGFILE4="$USB_DIR/log-disk-post.txt"
-LOGFILE5=""
-LOGFILE6="$USB_DIR/log-folders-post-usr_prog.txt"
-LOGFILE7="$USB_DIR/log-files-pre-etc.txt"
-LOGFILE8="$USB_DIR/log-folders-pre-etc.txt"
-LOGFILE9="$USB_DIR/log-files-pre-usr_prog.txt"
-LOGFILE10="$USB_DIR/log-folders-pre-usr_prog.txt"
-LOGFILE11="$USB_DIR/log-folders-docs.txt"
 
-echo "Collecting files in /usr/prog recursively..." >> "$LOGFILE9"
-echo "Collecting folders in /usr/prog recursively..." >> "$LOGFILE10"
-du -ah /usr/prog >> "$LOGFILE9" 2>&1
-du -h  /usr/prog >> "$LOGFILE10" 2>&1
+BEFORE_FILES="$USB_DIR/1-before-files.txt"
+BEFORE_FOLDERS="$USB_DIR/2-before-folders.txt"
+BEFORE_DISK="$USB_DIR/3-before-disk.txt"
+FILES_DELETED="$USB_DIR/4-deleted-files.txt"
+AFTER_DISK="$USB_DIR/5-after-disk.txt"
 
-echo "Collecting files in /usr/data recursively..." >> "$LOGFILE1"
-echo "Collecting folders in /usr/data recursively..." >> "$LOGFILE2"
-du -ah /usr/data >> "$LOGFILE1" 2>&1
-du -h  /usr/data >> "$LOGFILE2" 2>&1
+date > "$BEFORE_FILES"
+date > "$BEFORE_FOLDERS"
+date > "$BEFORE_DISK"
+date > "$FILES_DELETED"
+date > "$AFTER_DISK"
 
-echo "Collecting files in /etc recursively..." >> "$LOGFILE7"
-echo "Collecting folders in /etc recursively..." >> "$LOGFILE8"
-du -ah /etc >> "$LOGFILE7" 2>&1
-du -h  /etc  >> "$LOGFILE8" 2>&1
+echo "Collecting .log, .stl, .3mf, mp4, and other files recursively..." >> "$BEFORE_FILES"
+echo "Removing .log, .stl, .3mf, .mp4 and other files..." >> "$BEFORE_FILES"
+find /usr -type f -name "*.log"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.stl"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.3mf"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.mp4"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.gcode"  -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.tar.xz" -print >> "$BEFORE_FILES" 2>&1
 
-echo "Checking sizes of storage before..." >> "$LOGFILE3"
-df -h >> "$LOGFILE3" 2>&1
+echo "Collecting files in /usr/prog recursively..." >> "$BEFORE_FILES"
+du -ah /usr/prog >> "$BEFORE_FILES" 2>&1
+echo "Collecting files in /usr/data recursively..." >> "$BEFORE_FILES"
+du -ah /usr/data >> "$BEFORE_FILES" 2>&1
+echo "Collecting files in /etc recursively..." >> "$BEFORE_FILES"
+du -ah /etc >> "$BEFORE_FILES" 2>&1
 
-echo "Removing Files /usr/data recursively..." >> "$LOGFILE6"
-rm -rf ./usr/data/anvil/*
-rm -rf ./usr/data/anvil-data/*
-rm -rf ./usr/data/home/pwned/.cache/* 
-rm -rf ./usr/data/home/pwned/*
-rm -rf ./usr/data/anvil-data/* 
-rm -rf ./usr/data/zmod/*
-rm -rf ./usr/data/.mod/.zmod/*
-rm -rf ./usr/data/*.tar.xz
-rm -rf ./usr/data/bin/opt/var/cache/*
-rm -rf ./usr/data/logs/*
-rm -rf ./usr/data/update/*
-rm -rf ./usr/prog/moonraker/moonraker-old2/*
-rm -rf ./usr/prog/moonraker/moonraker-env-old2/*
-rm -rf ./usr/prog/moonraker/moonraker-old/*
-rm -rf ./usr/prog/moonraker/moonraker-env-old/*
-du -h /usr/data >> "$LOGFILE6" 2>&1
+echo "Collecting folders in /usr/prog recursively..." >> "$BEFORE_FOLDERS"
+du -h /usr/prog >> "$BEFORE_FOLDERS" 2>&1
+echo "Collecting folders in /usr/data recursively..." >> "$BEFORE_FOLDERS"
+du -h /usr/data >> "$BEFORE_FOLDERS" 2>&1
+echo "Collecting folders in /etc recursively..." >> "$BEFORE_FOLDERS"
+du -h /etc >> "$BEFORE_FOLDERS" 2>&1
 
-echo "Removing Folders /usr/data recursively..." >> "$LOGFILE6"
-rm -rf /usr/data/anvil
-rm -rf /usr/data/anvil-data
-rm -rf /usr/data/anvil-timelapse 
-rm -rf /usr/data/home/pwned/.cache 
-rm -rf /usr/data/home/pwned
-rm -rf /usr/data/anvil-data 
-rm -rf /usr/data/zmod/
-rm -rf /usr/data/.mod/.zmod
-rm -rf /usr/prog/moonraker/moonraker-old2
-rm -rf /usr/prog/moonraker/moonraker-env-old2
-rm -rf /usr/prog/moonraker/moonraker-old
-rm -rf /usr/prog/moonraker/moonraker-env-old
-du -h /usr/data >> "$LOGFILE6" 2>&1
+echo "Checking sizes of storage before removal..." >> "$BEFORE_DISK"
+df -h >> "$BEFORE_DISK" 2>&1
 
-echo "Removing non-Essential Documentation..." >> "$LOGFILE11"
-rm -rf /usr/prog/klipper/docs/
-rm -rf /usr/prog/openssl-1.0.2d/man/
-rm -rf /usr/prog/ffmpeg-4.0.2/share/man/ 
-rm -rf /usr/prog/libzip-1.10.1/share/man/
-echo "  /usr/prog/klipper/docs/" >> "$LOGFILE11"
-echo "  /usr/prog/openssl-1.0.2d/man/" >> "$LOGFILE11"
-echo "  /usr/prog/ffmpeg-4.0.2/share/man/" >> "$LOGFILE11"
-echo "  /usr/prog/libzip-1.10.1/share/man/" >> "$LOGFILE11"
+echo "Removing file types recursively..." >> "$FILES_DELETED"
+find /usr -type f -name "*.log"   -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+find /usr -type f -name "*.stl"   -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+find /usr -type f -name "*.3mf"   -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+find /usr -type f -name "*.gcode" -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+find /usr -type f -name "*.mp4"   -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+find /sur -type f -name "*.tar.xz"   -print -exec rm {} + >> "$FILES_DELETED" 2>&1
 
-echo "Checking sizes of storage after..." >> "$LOGFILE4"
-df -h >> "$LOGFILE4" 2>&1
+echo "Removing Folders recursively..." >> "$FILES_DELETED"
+FOLDERS_TO_REMOVE="
+/usr/data/anvil
+/usr/data/anvil-data
+/usr/data/anvil-timelapse
+/usr/data/zmod
+/usr/data/.mod/.zmod
+/usr/data/home/pwned
+/usr/prog/moonraker/moonraker-old*
+/usr/prog/moonraker/moonraker-env-old*
+/usr/prog/klipper/docs
+/usr/prog/openssl-1.0.2d/man
+/usr/prog/ffmpeg-4.0.2/share/man
+/usr/prog/libzip-1.10.1/share/man
+"
+echo "Emptying folders (files only, folders are kept)..." >> "$FILES_DELETED"
+find $FOLDERS_TO_REMOVE -print >> "$FILES_DELETED" 2>&1
+rm -rf $FOLDERS_TO_REMOVE
+
+# Folders that are kept, but the files inside are removed
+echo "Emptying cache, logs, and update folders..." >> "$FILES_DELETED"
+FOLDERS_TO_EMPTY="
+/usr/data/bin/opt/var/cache
+/usr/data/logs
+/usr/data/update
+"
+find $FOLDERS_TO_EMPTY -type f -print -exec rm {} + >> "$FILES_DELETED" 2>&1
+
+echo "Checking sizes of storage after..." >> "$AFTER_DISK"
+df -h >> "$AFTER_DISK" 2>&1
 
 sync
 exit 1
