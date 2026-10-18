@@ -1,35 +1,43 @@
 #!/bin/sh
 
 USB_DIR="$(dirname "$0")"
-LOGFILE1="$USB_DIR/log-files-usr_data.txt"
-LOGFILE2="$USB_DIR/log-folders-usr_data-pre.txt"
-LOGFILE3="$USB_DIR/log-disk-pre.txt"
-LOGFILE4="$USB_DIR/log-find.txt"
-LOGFILE5="$USB_DIR/log-disk-post.txt"
-LOGFILE6="$USB_DIR/log-folders-usr-post.txt"
-LOGFILE7="$USB_DIR/log-files-etc.txt"
-LOGFILE8="$USB_DIR/log-folders-etc.txt"
-LOGFILE9="$USB_DIR/log-files-usr_prog.txt"
-LOGFILE10="$USB_DIR/log-folders-usr_prog.txt"
-LOGFILE11="$USB_DIR/log-folders-docs.txt"
 
-echo "Collecting files in /usr/prog recursively..." >> "$LOGFILE9"
-echo "Collecting folders in /usr/prog recursively..." >> "$LOGFILE10"
-du -ah /usr/prog >> "$LOGFILE9" 2>&1
-du -h  /usr/prog >> "$LOGFILE10" 2>&1
+BEFORE_FILES="$USB_DIR/1-before-files.txt"
+BEFORE_FOLDERS="$USB_DIR/2-before-folders.txt"
+BEFORE_DISK="$USB_DIR/3-before-disk.txt"
+FILES_DELETED="$USB_DIR/4-deleted-files.txt"
+AFTER_DISK="$USB_DIR/5-after-disk.txt"
 
-echo "Collecting files in /usr/data recursively..." >> "$LOGFILE1"
-echo "Collecting folders in /usr/data recursively..." >> "$LOGFILE2"
-du -ah /usr/data >> "$LOGFILE1" 2>&1
-du -h  /usr/data >> "$LOGFILE2" 2>&1
+echo date > "$BEFORE_FILES"
+echo date > "$BEFORE_FOLDERS"
+echo date > "$BEFORE_DISK"
+echo date > "$FILES_DELETED"
+echo date > "$AFTER_DISK"
 
-echo "Collecting files in /etc recursively..." >> "$LOGFILE7"
-echo "Collecting folders in /etc recursively..." >> "$LOGFILE8"
-du -ah /etc >> "$LOGFILE7" 2>&1
-du -h  /etc  >> "$LOGFILE8" 2>&1
+echo "Collecting .log, .stl, .3mf, mp4, and other files recursively..." >> "$BEFORE_FILES"
+find /usr -type f -name "*.log"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.stl"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.3mf"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.mp4"    -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.gcode"  -print >> "$BEFORE_FILES" 2>&1
+find /usr -type f -name "*.tar.xz" -print >> "$BEFORE_FILES" 2>&1
 
-echo "Checking sizes of storage..." >> "$LOGFILE3"
-df -h >> "$LOGFILE3" 2>&1
+echo "Collecting files in /usr/prog recursively..." >> "$BEFORE_FILES"
+du -ah /usr/prog >> "$BEFORE_FILES" 2>&1
+echo "Collecting files in /usr/data recursively..." >> "$BEFORE_FILES"
+du -ah /usr/data >> "$BEFORE_FILES" 2>&1
+echo "Collecting files in /etc recursively..." >> "$BEFORE_FILES"
+du -ah /etc >> "$BEFORE_FILES" 2>&1
+
+echo "Collecting folders in /usr/prog recursively..." >> "$BEFORE_FOLDERS"
+du -h /usr/prog >> "$BEFORE_FOLDERS" 2>&1
+echo "Collecting folders in /usr/data recursively..." >> "$BEFORE_FOLDERS"
+du -h /usr/data >> "$BEFORE_FOLDERS" 2>&1
+echo "Collecting folders in /etc recursively..." >> "$BEFORE_FOLDERS"
+du -h /etc >> "$BEFORE_FOLDERS" 2>&1
+
+echo "Checking sizes of storage before..." >> "$BEFORE_DISK"
+df -h >> "$BEFORE_DISK" 2>&1
 
 sync
 exit 1
