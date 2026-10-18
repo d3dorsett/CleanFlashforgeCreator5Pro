@@ -8,11 +8,11 @@ BEFORE_DISK="$USB_DIR/3-before-disk.txt"
 FILES_DELETED="$USB_DIR/4-deleted-files.txt"
 AFTER_DISK="$USB_DIR/5-after-disk.txt"
 
-echo date > "$BEFORE_FILES"
-echo date > "$BEFORE_FOLDERS"
-echo date > "$BEFORE_DISK"
-echo date > "$FILES_DELETED"
-echo date > "$AFTER_DISK"
+date > "$BEFORE_FILES"
+date > "$BEFORE_FOLDERS"
+date > "$BEFORE_DISK"
+date > "$FILES_DELETED"
+date > "$AFTER_DISK"
 
 echo "Collecting .log, .stl, .3mf, mp4, and other files recursively..." >> "$BEFORE_FILES"
 find /usr -type f -name "*.log"    -print >> "$BEFORE_FILES" 2>&1
