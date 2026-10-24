@@ -24,7 +24,7 @@ The script provides two options:
 
 After running the script, review the generated file lists to see what existed before and after cleanup. The cleanup option deletes files and directories, so review its targets carefully before proceeding.
 
-Once everything has been deleted, flash the printer with z-mod's Universal unbricker for FF5M / FF5MPro / AD5X / Creator 5 / Creator 5 Pro
+Once everything has been deleted, either flash the printer again with the latest firmware or flash the printer with z-mod's Universal Unbricker for FF5M / FF5MPro / AD5X / Creator 5 / Creator 5 Pro
 https://wiki.zmod.link/Native_FW/?h=universal#creator-5-pro-stock-firmware
 
 **There are no safeguards against deleting files you may need. Use at your own risk.**
